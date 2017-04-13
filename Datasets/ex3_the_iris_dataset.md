@@ -1,19 +1,19 @@
 
 # Datasets
 
-## 機器學習資料集/ 範例三: The iris dataset
+## 机器学习资料集/ 范例三: The iris dataset
 
 
 http://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html
 
-這個範例目的是介紹機器學習範例資料集中的iris 鳶尾花資料集
+这个范例目的是介绍机器学习范例资料集中的iris 鸢尾花资料集
 
 
-## (一)引入函式庫及內建手寫數字資料庫
+## (一)引入函式库及内建手写数字资料库
 
 
 ```python
-#這行是在ipython notebook的介面裏專用，如果在其他介面則可以拿掉
+#这行是在ipython notebook的介面里专用，如果在其他介面则可以拿掉
 %matplotlib inline
 
 import matplotlib.pyplot as plt
@@ -46,8 +46,8 @@ plt.yticks(())
 ![png](ex3_fig1.png)
 
 
-## (二)資料集介紹
-`iris = datasets.load_iris()` 將一個dict型別資料存入iris，我們可以用下面程式碼來觀察裏面資料
+## (二)资料集介绍
+`iris = datasets.load_iris()` 将一个dict型别资料存入iris，我们可以用下面程式码来观察里面资料
 
 
 ```python
@@ -59,22 +59,22 @@ for key,value in iris.items() :
 print(iris['feature_names'])
 ```
 
-| 顯示 | 說明 |
+| 显示 | 说明 |
 | -- | -- |
-| ('target_names', (3L,))| 共有三種鳶尾花 setosa, versicolor, virginica |
-| ('data', (150L, 4L)) | 有150筆資料，共四種特徵 |
-| ('target', (150L,))| 這150筆資料各是那一種鳶尾花|
-| DESCR | 資料之描述 |
-| feature_names| 四個特徵代表的意義，分別為 萼片(sepal)之長與寬以及花瓣(petal)之長與寬
+| ('target_names', (3L,))| 共有三种鸢尾花 setosa, versicolor, virginica |
+| ('data', (150L, 4L)) | 有150笔资料，共四种特徵 |
+| ('target', (150L,))| 这150笔资料各是那一种鸢尾花|
+| DESCR | 资料之描述 |
+| feature_names| 四个特徵代表的意义，分别为 萼片(sepal)之长与宽以及花瓣(petal)之长与宽
 
-為了用視覺化方式呈現這個資料集，下面程式碼首先使用PCA演算法將資料維度降低至3
+为了用视觉化方式呈现这个资料集，下面程式码首先使用PCA演算法将资料维度降低至3
 
 
 ```python
 X_reduced = PCA(n_components=3).fit_transform(iris.data)
 ```
 
-接下來將三個維度的資料立用`mpl_toolkits.mplot3d.Axes3D` 建立三維繪圖空間，並利用 `scatter`以三個特徵資料數值當成座標繪入空間，並以三種iris之數值 Y，來指定資料點的顏色。我們可以看出三種iris中，有一種明顯的可以與其他兩種區別，而另外兩種則無法明顯區別。
+接下来将三个维度的资料立用`mpl_toolkits.mplot3d.Axes3D` 建立三维绘图空间，并利用 `scatter`以三个特徵资料数值当成座标绘入空间，并以三种iris之数值 Y，来指定资料点的颜色。我们可以看出三种iris中，有一种明显的可以与其他两种区别，而另外两种则无法明显区别。
 
 
 ```python
@@ -101,7 +101,7 @@ plt.show()
 
 
 ```python
-#接著我們嘗試將這個機器學習資料之描述檔顯示出來
+#接著我们尝试将这个机器学习资料之描述档显示出来
 print(iris['DESCR'])
 ```
 
@@ -169,15 +169,15 @@ print(iris['DESCR'])
 
 
 
-這個描述檔說明了這個資料集是在 1936年時由Fisher建立，為圖形識別領域之重要經典範例。共例用四種特徵來分類三種鳶尾花
+这个描述档说明了这个资料集是在 1936年时由Fisher建立，为图形识别领域之重要经典范例。共例用四种特徵来分类三种鸢尾花
 
-## (三)應用範例介紹
-在整個scikit-learn應用範例中，有以下幾個範例是利用了這組iris資料集。
+## (三)应用范例介绍
+在整个scikit-learn应用范例中，有以下几个范例是利用了这组iris资料集。
 
-* 分類法 Classification
+* 分类法 Classification
    * [EX 3: Plot classification probability](../Classification/ex3_Plot_classification_probability.md)
-* 特徵選擇 Feature Selection
+* 特徵选择 Feature Selection
    * [Ex 5: Test with permutations the significance of a classification score](../Feature_Selection/ex5_test_with_permutations_the_significance_of_a__.md)
    * [Ex 6: Univariate Feature Selection](../Feature_Selection/ex6_univariate_feature_selection.md)
-* 通用範例 General Examples
+* 通用范例 General Examples
    * [Ex 2: Concatenating multiple feature extraction methods](../general_examples/Ex2_feature_stacker.md)

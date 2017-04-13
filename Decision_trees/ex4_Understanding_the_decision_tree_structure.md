@@ -1,33 +1,33 @@
 
-## 決策樹範例四: Understanding the decision tree structure
+## 决策树范例四: Understanding the decision tree structure
 http://scikit-learn.org/stable/auto_examples/tree/plot_unveil_tree_structure.html#sphx-glr-auto-examples-tree-plot-unveil-tree-structure-py
 
-### 範例目的
-此範例主要在進一步探討決策樹內部的結構，分析以獲得特徵與目標之間的關係，並進而進行預測。<br />
-1. 當每個節點的分支最多只有兩個稱之為二元樹結構。<br />
-2. 判斷每個深度的節點是否為葉，在二元樹中若該節點為判斷的最後一層稱之為葉。<br />
-3. 利用 `decision_path` 獲得決策路徑的資訊。<br />
-4. 利用 `apply` 得到預測結果，也就是決策樹最後抵達的葉。<br />
-5. 建立完成後的規則變能用來預測。<br />
-6. 一組多個樣本可以尋得其中共同的決策路徑。<br />
+### 范例目的
+此范例主要在进一步探讨决策树内部的结构，分析以获得特徵与目标之间的关系，并进而进行预测。<br />
+1. 当每个节点的分支最多只有两个称之为二元树结构。<br />
+2. 判断每个深度的节点是否为叶，在二元树中若该节点为判断的最后一层称之为叶。<br />
+3. 利用 `decision_path` 获得决策路径的资讯。<br />
+4. 利用 `apply` 得到预测结果，也就是决策树最后抵达的叶。<br />
+5. 建立完成后的规则变能用来预测。<br />
+6. 一组多个样本可以寻得其中共同的决策路径。<br />
 
-### (一)引入函式庫及測試資料
-#### 引入函式資料庫
-* `load_iris` 引入鳶尾花資料庫。<br />
+### (一)引入函式库及测试资料
+#### 引入函式资料库
+* `load_iris` 引入鸢尾花资料库。<br />
 
 ```python
-from sklearn.model_selection import train_test_split 
+from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
 ```
 
-#### 建立訓練、測試集及決策樹分類器
-* X (特徵資料) 以及 y (目標資料)。<br />
-* `train_test_split(X, y, random_state)` 將資料隨機分為測試集及訓練集。<br />
-  X為特徵資料集、y為目標資料集，`random_state` 隨機數生成器。<br />
-* `DecisionTreeClassifier(max_leaf_nodes, random_state)` 建立決策樹分類器。<br />
-  `max_leaf_nodes` 節點為葉的最大數目，`random_state` 若存在則為隨機數生成器，若不存在則使用`np.random`。<br />
-* `fit(X, y)` 用做訓練，X為訓練用特徵資料，y為目標資料。<br />
+#### 建立训练、测试集及决策树分类器
+* X (特徵资料) 以及 y (目标资料)。<br />
+* `train_test_split(X, y, random_state)` 将资料随机分为测试集及训练集。<br />
+  X为特徵资料集、y为目标资料集，`random_state` 随机数生成器。<br />
+* `DecisionTreeClassifier(max_leaf_nodes, random_state)` 建立决策树分类器。<br />
+  `max_leaf_nodes` 节点为叶的最大数目，`random_state` 若存在则为随机数生成器，若不存在则使用`np.random`。<br />
+* `fit(X, y)` 用做训练，X为训练用特徵资料，y为目标资料。<br />
 
 ```python
 iris = load_iris()
@@ -39,17 +39,17 @@ estimator.fit(X_train, y_train)
 ```
 
 
-### (二) 決策樹結構探討
-在`DecisionTreeClassifier` 中有個屬性 `tree_`，儲存了整個樹的結構。<br />
-二元樹被表示為多個平行的矩陣，每個矩陣的第i個元素儲存著關於節點"i"的信息，節點0代表樹的根。<br />
-需要注意的是，有些矩陣只適用於有分支的節點，在這種情況下，其他類型的節點的值是任意的。<br />
+### (二) 决策树结构探讨
+在`DecisionTreeClassifier` 中有个属性 `tree_`，储存了整个树的结构。<br />
+二元树被表示为多个平行的矩阵，每个矩阵的第i个元素储存著关于节点"i"的信息，节点0代表树的根。<br />
+需要注意的是，有些矩阵只适用于有分支的节点，在这种情况下，其他类型的节点的值是任意的。<br />
 
-上述所說的矩陣包含了：
-1. `node_count` ：總共的節點個數。<br />
-2. `children_left`：節點左邊的節點的ID，"-1"代表該節點底下已無分支。<br />
-3. `children_righ`：節點右邊的節點的ID，"-1"代表該節點底下已無分支。<br />
-4. `feature`：使節點產生分支的特徵，"-2"代表該節點底下已無分支。<br />
-5. `threshold`：節點的閥值。若距離不超過 threshold ，則邊的兩端就視作同一個群集。
+上述所说的矩阵包含了：
+1. `node_count` ：总共的节点个数。<br />
+2. `children_left`：节点左边的节点的ID，"-1"代表该节点底下已无分支。<br />
+3. `children_righ`：节点右边的节点的ID，"-1"代表该节点底下已无分支。<br />
+4. `feature`：使节点产生分支的特徵，"-2"代表该节点底下已无分支。<br />
+5. `threshold`：节点的阀值。若距离不超过 threshold ，则边的两端就视作同一个群集。
 
 ```python
 n_nodes = estimator.tree_.node_count
@@ -58,7 +58,7 @@ children_right = estimator.tree_.children_right
 feature = estimator.tree_.feature
 threshold = estimator.tree_.threshold
 ```
-以下為各矩陣的內容
+以下为各矩阵的内容
 
 ```python
 n_nodes = 5
@@ -68,25 +68,25 @@ feature [ 3 -2  2 -2 -2]
 threshold [ 0.80000001 -2.          4.94999981 -2.         -2.        ]
 ```
 
-二元樹的結構所通過的各個屬性是可以被計算的，例如每個節點的深度以及是否為樹的最底層。<br />
-* `node_depth` ：節點在決策樹中的深度(層)。<br />
-* `is_leaves` ：該節點是否為決策樹的最底層(葉)。<br />
-* `stack`：存放尚未判斷是否達決策樹底層的節點資訊。<br />
+二元树的结构所通过的各个属性是可以被计算的，例如每个节点的深度以及是否为树的最底层。<br />
+* `node_depth` ：节点在决策树中的深度(层)。<br />
+* `is_leaves` ：该节点是否为决策树的最底层(叶)。<br />
+* `stack`：存放尚未判断是否达决策树底层的节点资讯。<br />
 
-將stack的一組節點資訊pop出來，判斷該節點的左邊節點ID是否等於右邊節點ID。<br />
-若不相同分別將左右節點的資訊加入stack中，若相同則該節點已達底層`is_leaves`設為True。<br />
+将stack的一组节点资讯pop出来，判断该节点的左边节点ID是否等于右边节点ID。<br />
+若不相同分别将左右节点的资讯加入stack中，若相同则该节点已达底层`is_leaves`设为True。<br />
 
 
 ```python
 node_depth = np.zeros(shape=n_nodes)
-is_leaves = np.zeros(shape=n_nodes, dtype=bool) 
+is_leaves = np.zeros(shape=n_nodes, dtype=bool)
 
 stack = [(0, -1)]  #initial
 
 while len(stack) > 0:
     node_id, parent_depth = stack.pop()
     node_depth[node_id] = parent_depth + 1
-    
+
     # If we have a test node
     if (children_left[node_id] != children_right[node_id]):
         stack.append((children_left[node_id], parent_depth + 1))
@@ -95,7 +95,7 @@ while len(stack) > 0:
         is_leaves[node_id] = True
 ```
 
-執行過程
+执行过程
 
 ```python
 stack len 1
@@ -130,8 +130,8 @@ stack []
 
 
 
-下面這個部分是以程式的方式印出決策樹結構，這個決策樹共有5個節點。<br />
-若遇到的是test node則用閥值決定該往哪個節點前進，直到走到葉為止。<br />
+下面这个部分是以程式的方式印出决策树结构，这个决策树共有5个节点。<br />
+若遇到的是test node则用阀值决定该往哪个节点前进，直到走到叶为止。<br />
 
 ```python
 print("The binary tree structure has %s nodes and has "
@@ -139,7 +139,7 @@ print("The binary tree structure has %s nodes and has "
       % n_nodes)
 for i in range(n_nodes):
     if is_leaves[i]:
-        print("%snode=%s leaf node." % (node_depth[i] * "\t", i)) #"\t"縮排
+        print("%snode=%s leaf node." % (node_depth[i] * "\t", i)) #"\t"缩排
     else:
         print("%snode=%s test node: go to node %s if X[:, %s] <= %s else to "
               "node %s."
@@ -152,7 +152,7 @@ for i in range(n_nodes):
                  ))
 ```
 
-執行結果
+执行结果
 
 ```python
 The binary tree structure has 5 nodes and has the following tree structure:
@@ -163,8 +163,8 @@ node=0 test node: go to node 1 if X[:, 3] <= 0.800000011921 else to node 2.
 		node=4 leaf node.
 ```
 
-接下來要來探索每個樣本的決策路徑，利用`decision_path`方法可以讓我們得到這些資訊，`apply`存放所有sample最後抵達哪個葉。<br />
-以第0筆樣本當作範例，`indices`存放每個樣本經過的節點，`indptr`存放每個樣本存放節點的位置，`node_index`中存放了第0筆樣本所經過的節點ID。<br />
+接下来要来探索每个样本的决策路径，利用`decision_path`方法可以让我们得到这些资讯，`apply`存放所有sample最后抵达哪个叶。<br />
+以第0笔样本当作范例，`indices`存放每个样本经过的节点，`indptr`存放每个样本存放节点的位置，`node_index`中存放了第0笔样本所经过的节点ID。<br />
 
 ```python
 node_indicator = estimator.decision_path(X_test)
@@ -200,16 +200,16 @@ for node_id in node_index:
 
 ```
 
-執行結果
+执行结果
 
 ```python
 node_index [0 2 4]
-Rules used to predict sample 0: 
+Rules used to predict sample 0:
 decision id node 4 : (X[0, -2] (= 1.5) > -2.0)
 ```
 
-接下來是探討多個樣本，是否有經過相同的節點。<br />
-以樣本0、1當作範例，`node_indicator.toarray()`存放多個矩陣0代表沒有經過該節點，1代表經過該節點。`common_nodes`中存放true與false，若同一個節點相加的值等於輸入樣本的各樹，則代表該節點都有被經過。
+接下来是探讨多个样本，是否有经过相同的节点。<br />
+以样本0、1当作范例，`node_indicator.toarray()`存放多个矩阵0代表没有经过该节点，1代表经过该节点。`common_nodes`中存放true与false，若同一个节点相加的值等于输入样本的各树，则代表该节点都有被经过。
 
 
 ```python
@@ -230,7 +230,7 @@ print("\nThe following samples %s share the node %s in the tree"
 print("It is %s %% of all nodes." % (100 * len(common_node_id) / n_nodes,))
 ```
 
-執行結果
+执行结果
 
 ```python
 node_indicator [[1 0 1 0 1]
@@ -242,7 +242,7 @@ The following samples [0, 1] share the node [0 2] in the tree
 It is 40.0 % of all nodes.
 ```
 
-### (三)完整程式碼
+### (三)完整程式码
 
 ```python
 import numpy as np

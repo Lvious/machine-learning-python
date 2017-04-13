@@ -1,20 +1,20 @@
-# **範例十二:Spectral clustering for image segmentation**
+# **范例十二:Spectral clustering for image segmentation**
 
 http://scikit-learn.org/stable/auto_examples/cluster/plot_segmentation_toy.html
 
-此範例是利用Spectral clustering來區別重疊的圓圈，將重疊的圓圈分為個體。
+此范例是利用Spectral clustering来区别重叠的圆圈，将重叠的圆圈分为个体。
 
-1. 建立一個100x100的影像包含四個不同半徑的圓
-2. 透過```np.indices```改變影像顏色複雜度
-3. 用```spectral_clustering```區分出各個不同區域特徵
+1. 建立一个100x100的影像包含四个不同半径的圆
+2. 透过```np.indices```改变影像颜色複杂度
+3. 用```spectral_clustering```区分出各个不同区域特徵
 
 
-## (一)引入函式庫
-引入函式庫如下：
-1. ```numpy```:產生陣列數值
-2. ```matplotlib.pyplot```:用來繪製影像
-3. ```sklearn.feature_extraction import image```:將每個像素的梯度關係圖像化
-4. ```sklearn.cluster import spectral_clustering```:將影像正規化切割
+## (一)引入函式库
+引入函式库如下：
+1. ```numpy```:产生阵列数值
+2. ```matplotlib.pyplot```:用来绘製影像
+3. ```sklearn.feature_extraction import image```:将每个像素的梯度关系图像化
+4. ```sklearn.cluster import spectral_clustering```:将影像正规化切割
 
 
 ```python
@@ -25,18 +25,18 @@ from sklearn.feature_extraction import image
 from sklearn.cluster import spectral_clustering```
 
 
-## (二)建立要被區分的重疊圓圈影像
+## (二)建立要被区分的重叠圆圈影像
 
-* 產生一個大小為輸入值得矩陣(此範例為100x100)，其內部值為沿著座標方向遞增(如:0,1,...)的值。
+* 产生一个大小为输入值得矩阵(此范例为100x100)，其内部值为沿著座标方向递增(如:0,1,...)的值。
 
 
 ```python
 l = 100
 x, y = np.indices((l, l))```
 
-* 建立四個圓圈的圓心座標並給定座標值
-* 給定四個圓圈的半徑長度
-* 將圓心座標與半徑結合產生四個圓圈圖像
+* 建立四个圆圈的圆心座标并给定座标值
+* 给定四个圆圈的半径长度
+* 将圆心座标与半径结合产生四个圆圈图像
 
 ```python
 center1 = (28, 24)
@@ -51,10 +51,10 @@ circle2 = (x - center2[0]) ** 2 + (y - center2[1]) ** 2 < radius2 ** 2
 circle3 = (x - center3[0]) ** 2 + (y - center3[1]) ** 2 < radius3 ** 2
 circle4 = (x - center4[0]) ** 2 + (y - center4[1]) ** 2 < radius4 ** 2
 ```
-* 將上一段產生的四個圓圈影像合併為```img```使其成為一體的物件
-* ```mask```為布林形式的```img```
-* ```img```為浮點數形式的```img```
-* 用亂數產生的方法將整張影像作亂數處理
+* 将上一段产生的四个圆圈影像合併为```img```使其成为一体的物件
+* ```mask```为布林形式的```img```
+* ```img```为浮点数形式的```img```
+* 用乱数产生的方法将整张影像作乱数处理
 
 
 ```python
@@ -67,22 +67,22 @@ img += 1 + 0.2 * np.random.randn(*img.shape)```
 
 
 
-接著將產生好的影像化為可使用```spectral_clustering```的影像
+接著将产生好的影像化为可使用```spectral_clustering```的影像
 
-* ```image.img_to_graph``` 用來處理邊緣的權重與每個像速間的梯度關聯有關
-* 用類似Voronoi Diagram演算法的概念來處理影像
+* ```image.img_to_graph``` 用来处理边缘的权重与每个像速间的梯度关联有关
+* 用类似Voronoi Diagram演算法的概念来处理影像
 
 ```python
 graph = image.img_to_graph(img, mask=mask)
 
 graph.data = np.exp(-graph.data / graph.data.std())
 ```
-最後用```spectral_clustering```將連在一起的部分切開，而```spectral_clustering```中的各項參數設定如下:
-* ```graph```: 必須是一個矩陣且大小為nxn的形式
-* ```n_clusters=4```: 需要提取出的群集數
+最后用```spectral_clustering```将连在一起的部分切开，而```spectral_clustering```中的各项参数设定如下:
+* ```graph```: 必须是一个矩阵且大小为nxn的形式
+* ```n_clusters=4```: 需要提取出的群集数
 * ```eigen_solver='arpack'```: 解特徵值的方式
 
-開一張新影像```label_im```用來展示```spectral_clustering```切開後的分類結果
+开一张新影像```label_im```用来展示```spectral_clustering```切开后的分类结果
 
 ```python
 labels = spectral_clustering(graph, n_clusters=4, eigen_solver='arpack')
@@ -96,7 +96,7 @@ plt.matshow(label_im)
 ![](http://scikit-learn.org/stable/_images/plot_segmentation_toy_002.png)
 
 
-## (三)完整程式碼
+## (三)完整程式码
 Python source code:plot_segmentation_toy.py
 
 http://scikit-learn.org/stable/_downloads/plot_segmentation_toy.py

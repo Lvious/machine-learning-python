@@ -1,22 +1,22 @@
-# 通用範例/範例四: Imputing missing values before building an estimator
+# 通用范例/范例四: Imputing missing values before building an estimator
 
 http://scikit-learn.org/stable/auto_examples/missing_values.htm
 
-在這範例說明有時補充缺少的數據(missing values)，可以得到更好的結果。但仍然需要進行交叉驗證。來驗證填充是否合適<br />。而missing values可以用均值、中位值，或者頻繁出現的值代替。中位值對大數據之機器學習來說是比較穩定的估計值。
+在这范例说明有时补充缺少的数据(missing values)，可以得到更好的结果。但仍然需要进行交叉验证。来验证填充是否合适<br />。而missing values可以用均值、中位值，或者频繁出现的值代替。中位值对大数据之机器学习来说是比较稳定的估计值。
 
-## (一)引入函式庫及內建測試資料庫
+## (一)引入函式库及内建测试资料库
 
-引入之函式庫如下
+引入之函式库如下
 
-1. `sklearn.ensemble.RandomForestRegressor`: 隨機森林回歸
-2. `sklearn.pipeline.Pipeline`: 串聯估計器
+1. `sklearn.ensemble.RandomForestRegressor`: 随机森林回归
+2. `sklearn.pipeline.Pipeline`: 串联估计器
 3. `sklearn.preprocessing.Imputer`: 缺失值填充
-4. `sklearn.cross_validation import cross_val_score`:交叉驗證
+4. `sklearn.cross_validation import cross_val_score`:交叉验证
 
-## (二)引入內建測試資料庫(boston房產資料)
-使用 `datasets.load_boston()` 將資料存入， `boston` 為一個dict型別資料，我們看一下資料的內容。<br />
-n_samples 為樣本數<br />
-n_features 為特徵數
+## (二)引入内建测试资料库(boston房产资料)
+使用 `datasets.load_boston()` 将资料存入， `boston` 为一个dict型别资料，我们看一下资料的内容。<br />
+n_samples 为样本数<br />
+n_features 为特征数
 
 ```python
 dataset = load_boston()
@@ -25,17 +25,17 @@ n_samples = X_full.shape[0]
 n_features = X_full.shape[1]
 ```
 
-| 顯示 | 說明 |
+| 显示 | 说明 |
 | -- | -- |
-| ('data', (506, 13))| 機器學習數據 |
-| ('feature_names', (13,)) | 房地產相關特徵 |
-| ('target', (506,)) | 回歸目標 |
-| DESCR | 資料之描述 |
+| ('data', (506, 13))| 机器学习数据 |
+| ('feature_names', (13,)) | 房地产相关特征 |
+| ('target', (506,)) | 回归目标 |
+| DESCR | 资料之描述 |
 
-共有506筆資料及13個特徵('CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD','TAX', 'PTRATIO', 'B', 'LSTAT')用來描述房地產的週邊狀況，如CRIM (per capita crime rate by town)跟該區域之犯罪率有關。而迴歸目標為房地產的價格，以1000美元為單位。也就是說這個範例希望以房地產的週遭客觀數據來預測房地產的價格。
+共有506笔资料及13个特征('CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD','TAX', 'PTRATIO', 'B', 'LSTAT')用来描述房地产的週边状况，如CRIM (per capita crime rate by town)跟该区域之犯罪率有关。而迴归目标为房地产的价格，以1000美元为单位。也就是说这个范例希望以房地产的週遭客观数据来预测房地产的价格。
 
-## (三)利用整個數據集來預測
-全部的資料使用隨機森林回歸函數進行交叉驗證，得到一個分數。<br />
+## (三)利用整个数据集来预测
+全部的资料使用随机森林回归函数进行交叉验证，得到一个分数。<br />
 
 Score with the entire dataset = 0.56
 ```python
@@ -44,10 +44,10 @@ score = cross_val_score(estimator, X_full, y_full).mean()
 print("Score with the entire dataset = %.2f" % score)
 ```
 
-## (四)模擬資料損失時之預測情形
-設定損失比例，並估計移除missing values後的得分
-損失比例75%，損失樣本數為379筆，剩餘樣本為127筆。<br />
-將127筆資料進行隨機森林回歸函數進行交叉驗證，並得到一個分數。<br />
+## (四)模拟资料损失时之预测情形
+设定损失比例，并估计移除missing values后的得分
+损失比例75%，损失样本数为379笔，剩馀样本为127笔。<br />
+将127笔资料进行随机森林回归函数进行交叉验证，并得到一个分数。<br />
 
 Score without the samples containing missing values = 0.49
 ```python
@@ -67,15 +67,15 @@ score = cross_val_score(estimator, X_filtered, y_filtered).mean()
 print("Score without the samples containing missing values = %.2f" % score)
 ```
 
-## (五)填充missing values，估計填充後的得分
-每一筆樣本資料都在13個特徵中隨機遺失一個特徵資料，<br />
-使用`sklearn.preprocessing.Imputer`進行missing values的填充。<br />
+## (五)填充missing values，估计填充后的得分
+每一笔样本资料都在13个特征中随机遗失一个特征资料，<br />
+使用`sklearn.preprocessing.Imputer`进行missing values的填充。<br />
 
 ```
 class sklearn.preprocessing.Imputer(missing_values='NaN', strategy='mean', axis=0, verbose=0, copy=True)
 ```
 
-填充後進行隨機森林回歸函數進行交叉驗證，獲得填充後分數。
+填充后进行随机森林回归函数进行交叉验证，获得填充后分数。
 
 
 ```python
@@ -91,11 +91,11 @@ score = cross_val_score(estimator, X_missing, y_missing).mean()
 print("Score after imputation of the missing values = %.2f" % score)
 ```
 
-利用數據填充後的迴歸函數，去測試填充前的資料，預測的準確率獲得提升。<br/>
+利用数据填充后的迴归函数，去测试填充前的资料，预测的准确率获得提升。<br/>
 
 Score after imputation of the missing values = 0.57
 
-## (六)完整程式碼
+## (六)完整程式码
 Python source code: missing_values.py<br />
 http://scikit-learn.org/stable/auto_examples/missing_values.html#example-missing-values-py
 ```python
@@ -154,5 +154,3 @@ Score with the entire dataset = 0.56
 Score without the samples containing missing values = 0.48
 Score after imputation of the missing values = 0.55
 ```
-
-

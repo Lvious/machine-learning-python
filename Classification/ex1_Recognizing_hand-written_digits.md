@@ -1,23 +1,23 @@
-##分類法/範例一: Recognizing hand-written digits
+##分类法/范例一: Recognizing hand-written digits
 
 http://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html
 
-這個範例用來展示scikit-learn 機器學習套件，如何用SVM演算法來達成手寫的數字辨識
+这个范例用来展示scikit-learn 机器学习套件，如何用SVM演算法来达成手写的数字辨识
 
-1. 利用 `make_classification` 建立模擬資料
-2. 利用 `sklearn.datasets.load_digits()` 來讀取內建資料庫
-3. 用線性的SVC來做分類，以8x8的影像之像素值來當作特徵(共64個特徵)
-4. 用 `metrics.classification_report` 來提供辨識報表
+1. 利用 `make_classification` 建立模拟资料
+2. 利用 `sklearn.datasets.load_digits()` 来读取内建资料库
+3. 用线性的SVC来做分类，以8x8的影像之像素值来当作特徵(共64个特徵)
+4. 用 `metrics.classification_report` 来提供辨识报表
 
 
-## (一)引入函式庫及內建手寫數字資料庫
+## (一)引入函式库及内建手写数字资料库
 
-引入之函式庫如下
+引入之函式库如下
 
-1. matplotlib.pyplot: 用來繪製影像
-2. sklearn.datasets: 用來繪入內建之手寫數字資料庫
-3. sklearn.svm: SVM 支持向量機之演算法物件
-4. sklearn.metrics: 用來評估辨識準確度以及報表的顯示
+1. matplotlib.pyplot: 用来绘製影像
+2. sklearn.datasets: 用来绘入内建之手写数字资料库
+3. sklearn.svm: SVM 支持向量机之演算法物件
+4. sklearn.metrics: 用来评估辨识准确度以及报表的显示
 
 ```python
 import matplotlib.pyplot as plt
@@ -27,7 +27,7 @@ from sklearn import datasets, svm, metrics
 digits = datasets.load_digits()
 ```
 
-使用`datasets.load_digits()`將資料存入，`digits`為一個dict型別資料，我們可以用以下指令來看一下資料的內容。
+使用`datasets.load_digits()`将资料存入，`digits`为一个dict型别资料，我们可以用以下指令来看一下资料的内容。
 
 ```python
 for key,value in digits.items() :
@@ -38,16 +38,16 @@ for key,value in digits.items() :
 ```
 
 
-| 顯示 | 說明 |
+| 显示 | 说明 |
 | -- | -- |
-| ('images', (1797L, 8L, 8L))| 共有 1797 張影像，影像大小為 8x8 |
-| ('data', (1797L, 64L)) | data 則是將8x8的矩陣攤平成64個元素之一維向量 |
-| ('target_names', (10L,)) | 說明10種分類之對應 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] |
-| DESCR | 資料之描述 |
-| ('target', (1797L,))| 記錄1797張影像各自代表那一個數字 |
+| ('images', (1797L, 8L, 8L))| 共有 1797 张影像，影像大小为 8x8 |
+| ('data', (1797L, 64L)) | data 则是将8x8的矩阵摊平成64个元素之一维向量 |
+| ('target_names', (10L,)) | 说明10种分类之对应 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] |
+| DESCR | 资料之描述 |
+| ('target', (1797L,))| 记录1797张影像各自代表那一个数字 |
 
 
-接下來我們試著以下面指令來觀察資料檔，每張影像所對照的實際數字存在`digits.target`變數中
+接下来我们试著以下面指令来观察资料档，每张影像所对照的实际数字存在`digits.target`变数中
 
 ```python
 images_and_labels = list(zip(digits.images, digits.target))
@@ -60,43 +60,43 @@ for index, (image, label) in enumerate(images_and_labels[:4]):
 
 ![](images/ex1_output_7_0.png)
 
-##(二)訓練以及分類
-接下來的步驟則是使用`reshape`指令將8x8的影像資料攤平成64x1的矩陣。
-接著用`classifier = svm.SVC(gamma=0.001)`產生一個SVC分類器(Support Vector Classification)。再將一半的資料送入分類器來訓練`classifier.fit(資料:898x64, 分類目標:898x1)`。SVC之預設kernel function為RBF (radial basis function): $$\exp(-\gamma |x-x'|^2)$$. 其中`SVC(gamma=0.001)`就是在設定RBF函數裏的$$\gamma$$ 這個值必需要大於零。最後，再利用後半部份的資料來測試訓練完成之SVC分類機`predict(data[n_samples / 2:])`將預測結果存入`predicted`變數，而原先的真實目標資料則存於`expected`變數，用於下一節之準確度統計。
+##(二)训练以及分类
+接下来的步骤则是使用`reshape`指令将8x8的影像资料摊平成64x1的矩阵。
+接著用`classifier = svm.SVC(gamma=0.001)`产生一个SVC分类器(Support Vector Classification)。再将一半的资料送入分类器来训练`classifier.fit(资料:898x64, 分类目标:898x1)`。SVC之预设kernel function为RBF (radial basis function): $$\exp(-\gamma |x-x'|^2)$$. 其中`SVC(gamma=0.001)`就是在设定RBF函数里的$$\gamma$$ 这个值必需要大于零。最后，再利用后半部份的资料来测试训练完成之SVC分类机`predict(data[n_samples / 2:])`将预测结果存入`predicted`变数，而原先的真实目标资料则存于`expected`变数，用于下一节之准确度统计。
 
 ```python
 n_samples = len(digits.images)
 
-# 資料攤平:1797 x 8 x 8 -> 1797 x 64
-# 這裏的-1代表自動計算，相當於 (n_samples, 64)
+# 资料摊平:1797 x 8 x 8 -> 1797 x 64
+# 这里的-1代表自动计算，相当于 (n_samples, 64)
 data = digits.images.reshape((n_samples, -1))
 
-# 產生SVC分類器
+# 产生SVC分类器
 classifier = svm.SVC(gamma=0.001)
 
-# 用前半部份的資料來訓練
+# 用前半部份的资料来训练
 classifier.fit(data[:n_samples / 2], digits.target[:n_samples / 2])
 
 expected = digits.target[n_samples / 2:]
 
-#利用後半部份的資料來測試分類器，共 899筆資料
+#利用后半部份的资料来测试分类器，共 899笔资料
 predicted = classifier.predict(data[n_samples / 2:])
 ```
 
-若是觀察 `expected` 及 `predicted` 矩陣中之前10個變數可以得到:
+若是观察 `expected` 及 `predicted` 矩阵中之前10个变数可以得到:
 * `expected[:10]` :[8 8 4 9 0 8 9 8 1 2]
 * `predicted[:10]`:[8 8 4 9 0 8 9 8 1 2]
 
-這說明了前10個元素中，我們之前訓練完成的分類機，正確的分類了手寫數字資料。那對於全部測試資料的準確度呢？要如何量測？
+这说明了前10个元素中，我们之前训练完成的分类机，正确的分类了手写数字资料。那对于全部测试资料的准确度呢？要如何量测？
 
-##(三)分類準確度統計
-那在判斷準確度方面，我們可以使用一個名為「混淆矩陣」(Confusion matrix)的方式來統計。
+##(三)分类准确度统计
+那在判断准确度方面，我们可以使用一个名为「混淆矩阵」(Confusion matrix)的方式来统计。
 
 ```python
 print("Confusion matrix:\n%s"
     % metrics.confusion_matrix(expected, predicted))
 ```
-使用sklearn中之metrics物件，`metrics.confusion_matrix(真實資料:899, 預測資料:899)`可以列出下面矩陣。此矩陣對角線左上方第一個數字 87，代表實際為0且預測為0的總數有87個，同一列(row)第五個元素則代表，實際為0但判斷為4的資料個數為1個。
+使用sklearn中之metrics物件，`metrics.confusion_matrix(真实资料:899, 预测资料:899)`可以列出下面矩阵。此矩阵对角线左上方第一个数字 87，代表实际为0且预测为0的总数有87个，同一列(row)第五个元素则代表，实际为0但判断为4的资料个数为1个。
 ```
 Confusion matrix:
 [[87  0  0  0  1  0  0  0  0  0]
@@ -110,7 +110,7 @@ Confusion matrix:
  [ 0  0  0  0  0  0  0  0 88  0]
  [ 0  0  0  1  0  1  0  0  0 90]]
 ```
-我們可以利用以下的程式碼將混淆矩陣圖示出來。由圖示可以看出，實際為3時，有數次誤判為5,7,8。
+我们可以利用以下的程式码将混淆矩阵图示出来。由图示可以看出，实际为3时，有数次误判为5,7,8。
 
 ```python
 def plot_confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.Blues):
@@ -130,29 +130,29 @@ plot_confusion_matrix(metrics.confusion_matrix(expected, predicted))
 ```
 ![](images/ex1_plot_confusion_matrix.png)
 
-以手寫影像3為例，我們可以用四個數字來探討判斷的精準度。
+以手写影像3为例，我们可以用四个数字来探讨判断的精准度。
 
-1. True Positive(TP,真陽):實際為3且判斷為3，共79個
-2. False Positive(FP,偽陽):判斷為3但判斷錯誤，共2個
-3. False Negative(FN,偽陰):實際為3但判斷錯誤，共12個
-4. True Negative(TN,真陰):實際不為3，且判斷正確。也就是其餘899-79-2-12=885個
+1. True Positive(TP,真阳):实际为3且判断为3，共79个
+2. False Positive(FP,伪阳):判断为3但判断错误，共2个
+3. False Negative(FN,伪阴):实际为3但判断错误，共12个
+4. True Negative(TN,真阴):实际不为3，且判断正确。也就是其馀899-79-2-12=885个
 
-而在機器學習理論中，我們通常用以下precision, recall, f1-score來探討精確度。以手寫影像3為例。
+而在机器学习理论中，我们通常用以下precision, recall, f1-score来探讨精确度。以手写影像3为例。
 
 * precision = TP/(TP+FP) = 79/81 = 0.98
-* 判斷為3且實際為3的比例為0.98
+* 判断为3且实际为3的比例为0.98
 * recall = TP/(TP+FN) = 79/91 = 0.87
-* 實際為3且判斷為3的比例為0.87
-* f1-score 則為以上兩者之「harmonic mean 調和平均數」
+* 实际为3且判断为3的比例为0.87
+* f1-score 则为以上两者之「harmonic mean 调和平均数」
 * f1-score= 2 x precision x recall/(recision + recall) = 0.92
 
-metrics物件裏也提供了方便的函式`metrics.classification_report(expected, predicted)`計算以上統計數據。
+metrics物件里也提供了方便的函式`metrics.classification_report(expected, predicted)`计算以上统计数据。
 
 ```python
 print("Classification report for classifier %s:\n%s\n"
     % (classifier, metrics.classification_report(expected, predicted)))
 ```
-此報表最後的 support，則代表著實際為手寫數字的總數。例如實際為3的數字共有91個。
+此报表最后的 support，则代表著实际为手写数字的总数。例如实际为3的数字共有91个。
 ```
              precision    recall  f1-score   support
 
@@ -169,7 +169,7 @@ print("Classification report for classifier %s:\n%s\n"
 
 avg / total       0.97      0.97      0.97       899
 ```
-最後，用以下的程式碼可以觀察測試影像以及預測(分類)結果得對應關係。
+最后，用以下的程式码可以观察测试影像以及预测(分类)结果得对应关系。
 
 ```python
 images_and_predictions = list(
@@ -185,7 +185,7 @@ plt.show()
 ![](images/ex1_plotpredition.png)
 
 
-##(四)完整程式碼
+##(四)完整程式码
 Python source code: plot_digits_classification.py
 
 http://scikit-learn.org/stable/_downloads/plot_digits_classification.py

@@ -1,27 +1,27 @@
-##通用範例/範例一: Plotting Cross-Validated Predictions
+##通用范例/范例一: Plotting Cross-Validated Predictions
 
 http://scikit-learn.org/stable/auto_examples/plot_cv_predict.html
 
-1. 資料集：波士頓房產
-2. 特徵：房地產客觀數據，如年份、平面大小
-3. 預測目標：房地產價格
-4. 機器學習方法：線性迴歸
-5. 探討重點：10 等分的交叉驗証(10-fold Cross-Validation)來實際測試資料以及預測值的關係
-6. 關鍵函式： `sklearn.cross_validation.cross_val_predict`
+1. 资料集：波士顿房产
+2. 特征：房地产客观数据，如年份、平面大小
+3. 预测目标：房地产价格
+4. 机器学习方法：线性迴归
+5. 探讨重点：10 等分的交叉验証(10-fold Cross-Validation)来实际测试资料以及预测值的关系
+6. 关键函式： `sklearn.cross_validation.cross_val_predict`
 
-## (一)引入函式庫及內建測試資料庫
+## (一)引入函式库及内建测试资料库
 
-引入之函式庫如下
+引入之函式库如下
 
-1. `matplotlib.pyplot`: 用來繪製影像
-2. `sklearn.datasets`: 用來繪入內建測試資料庫
-3. `sklearn.cross_validation import cross_val_predict`：利用交叉驗證的方式來預測
-4. `sklearn.linear_model`：使用線性迴歸
+1. `matplotlib.pyplot`: 用来绘製影像
+2. `sklearn.datasets`: 用来绘入内建测试资料库
+3. `sklearn.cross_validation import cross_val_predict`：利用交叉验证的方式来预测
+4. `sklearn.linear_model`：使用线性迴归
 
 
 
-## (二)引入內建測試資料庫(boston房產資料)
-使用 `datasets.load_boston()` 將資料存入， `boston` 為一個dict型別資料，我們看一下資料的內容。
+## (二)引入内建测试资料库(boston房产资料)
+使用 `datasets.load_boston()` 将资料存入， `boston` 为一个dict型别资料，我们看一下资料的内容。
 
 ```python
 lr = linear_model.LinearRegression()
@@ -30,12 +30,12 @@ boston = datasets.load_boston()
 y = boston.target
 ```
 
-| 顯示 | 說明 |
+| 显示 | 说明 |
 | -- | -- |
-| ('data', (506, 13))| 房地產的資料集，共506筆房產13個特徵 |
-| ('feature_names', (13,)) | 房地產的特徵名 |
-| ('target', (506,)) | 回歸目標 |
-| DESCR | 資料之描述 |
+| ('data', (506, 13))| 房地产的资料集，共506笔房产13个特征 |
+| ('feature_names', (13,)) | 房地产的特征名 |
+| ('target', (506,)) | 回归目标 |
+| DESCR | 资料之描述 |
 
 
 
@@ -43,17 +43,17 @@ y = boston.target
 
 `sklearn.cross_validation.cross_val_predict`(estimator, X, y=None, cv=None, n_jobs=1, verbose=0, fit_params=None, pre_dispatch='2*n_jobs')
 
-X為機器學習數據，
-y為回歸目標，
-cv為交叉驗証時資料切分的依據，範例為10則將資料切分為10等分，以其中9等分為訓練集，另外一等分則為測試集。
+X为机器学习数据，
+y为回归目标，
+cv为交叉验証时资料切分的依据，范例为10则将资料切分为10等分，以其中9等分为训练集，另外一等分则为测试集。
 ```python
 predicted = cross_val_predict(lr, boston.data, y, cv=10)
 ```
 
-## (四)繪出預測結果與實際目標差異圖
-X軸為回歸目標，Y軸為預測結果。
+## (四)绘出预测结果与实际目标差异图
+X轴为回归目标，Y轴为预测结果。
 
-並劃出一條斜率=1的理想曲線(用虛線標示)
+并划出一条斜率=1的理想曲线(用虚线标示)
 ```python
 fig, ax = plt.subplots()
 ax.scatter(y, predicted)
@@ -65,7 +65,7 @@ plt.show()
 ![](images/cv_predict_figure_1.png)
 
 
-## (五)完整程式碼
+## (五)完整程式码
 Python source code: plot_cv_predict.py
 
 http://scikit-learn.org/stable/auto_examples/plot_cv_predict.html

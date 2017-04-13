@@ -1,15 +1,15 @@
-##特徵選擇/範例七: Comparison of F-test and mutual information
+##特徵选择/范例七: Comparison of F-test and mutual information
 
 [http://scikit-learn.org/stable/auto_examples/feature_selection/plot_f_test_vs_mi.html#sphx-glr-auto-examples-feature-selection-plot-f-test-vs-mi-py](http://scikit-learn.org/stable/auto_examples/feature_selection/plot_f_test_vs_mi.html#sphx-glr-auto-examples-feature-selection-plot-f-test-vs-mi-py)
 
-這個範例是解釋單變量選擇特徵的兩個方法，F-test statistics以及mutual information。單變量特徵選擇可以算是選擇特徵的預處理，用以判斷適當的特徵選擇方式。
+这个范例是解释单变量选择特徵的两个方法，F-test statistics以及mutual information。单变量特徵选择可以算是选择特徵的预处理，用以判断适当的特徵选择方式。
 
-此範例假設了三個特徵變數x1, x2, x3分布在0與1之間，並且依照下列公式模擬預測目標：
-y = x1+ +sin(6 * pi * x2)+0.1 * N(0,1) 第三個特徵變量與預測目標無相關
+此范例假设了三个特徵变数x1, x2, x3分布在0与1之间，并且依照下列公式模拟预测目标：
+y = x1+ +sin(6 * pi * x2)+0.1 * N(0,1) 第三个特徵变量与预测目标无相关
 
-下面的函式畫出了y與每個x_i之間的相依性，並且把F-test statistics以及mutual information的計算分數算出來，可以看到不同的變數影響方式在兩種方法會有不同的結果。
+下面的函式画出了y与每个x_i之间的相依性，并且把F-test statistics以及mutual information的计算分数算出来，可以看到不同的变数影响方式在两种方法会有不同的结果。
 
-F-test 的結果只會關注線性相關的變數影響，該方法選擇x1作為最具有特徵影響力的變量。另一方面，mutual information方法可以選出經過不同函式呈現的目標變數特徵，而他選擇了X2作為最具有影響力的特徵，我們在直覺上認為能找出經過三角函數轉換過的特徵變數，更符合在這個例子中目標變數的影響方式。而兩種方法都準確的判斷x3與目標變數無相關性。
+F-test 的结果只会关注线性相关的变数影响，该方法选择x1作为最具有特徵影响力的变量。另一方面，mutual information方法可以选出经过不同函式呈现的目标变数特徵，而他选择了X2作为最具有影响力的特徵，我们在直觉上认为能找出经过三角函数转换过的特徵变数，更符合在这个例子中目标变数的影响方式。而两种方法都准确的判断x3与目标变数无相关性。
 
 ![](sphx_glr_plot_f_test_vs_mi_001.png)
 

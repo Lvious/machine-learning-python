@@ -1,22 +1,22 @@
-##特徵選擇/範例六: Univariate Feature Selection
+##特徵选择/范例六: Univariate Feature Selection
 
 http://scikit-learn.org/stable/auto_examples/feature_selection/plot_feature_selection.html
 
 
-此範例示範單變量特徵的選擇。鳶尾花資料中會加入數個雜訊特徵(不具影響力的特徵資訊)並且選擇單變量特徵。選擇過程會畫出每個特徵的 p-value 與其在支持向量機中的權重。可以從圖表中看出主要影響力特徵的選擇會選出具有主要影響力的特徵，並且這些特徵會在支持向量機有相當大的權重。
-在本範例的所有特徵中，只有最前面的四個特徵是對目標有意義的。我們可以看到這些特徵的單變量特徵評分很高。而支持向量機會賦予最主要的權重到這些具影響力的特徵之一，但也會挑選剩下的特徵來做判斷。在支持向量機增加權重之前就確定那些特徵較具有影響力，從而增加辨識率。
+此范例示范单变量特徵的选择。鸢尾花资料中会加入数个杂讯特徵(不具影响力的特徵资讯)并且选择单变量特徵。选择过程会画出每个特徵的 p-value 与其在支持向量机中的权重。可以从图表中看出主要影响力特徵的选择会选出具有主要影响力的特徵，并且这些特徵会在支持向量机有相当大的权重。
+在本范例的所有特徵中，只有最前面的四个特徵是对目标有意义的。我们可以看到这些特徵的单变量特徵评分很高。而支持向量机会赋予最主要的权重到这些具影响力的特徵之一，但也会挑选剩下的特徵来做判断。在支持向量机增加权重之前就确定那些特徵较具有影响力，从而增加辨识率。
 
-1. 資料集：鳶尾花
-2. 特徵：萼片(sepal)之長與寬以及花瓣(petal)之長與寬
-3. 預測目標：共有三種鳶尾花 setosa, versicolor, virginica
-4. 機器學習方法：線性分類
-5. 探討重點：使用單變量選擇(`SelectPercentile`)挑出訓練特徵，與直接將所有訓練特徵輸入的分類器做比較
-6. 關鍵函式： `sklearn.feature_selection.SelectPercentile`
+1. 资料集：鸢尾花
+2. 特徵：萼片(sepal)之长与宽以及花瓣(petal)之长与宽
+3. 预测目标：共有三种鸢尾花 setosa, versicolor, virginica
+4. 机器学习方法：线性分类
+5. 探讨重点：使用单变量选择(`SelectPercentile`)挑出训练特徵，与直接将所有训练特徵输入的分类器做比较
+6. 关键函式： `sklearn.feature_selection.SelectPercentile`
 
 
-### (一)修改原本的鳶尾花資料
+### (一)修改原本的鸢尾花资料
 
-用`datasets.load_iris()`讀取鳶尾花的資料做為具有影響力的特徵，並以`np.random.uniform`建立二十個隨機資料做為不具影響力的特徵，並合併做為訓練樣本。
+用`datasets.load_iris()`读取鸢尾花的资料做为具有影响力的特徵，并以`np.random.uniform`建立二十个随机资料做为不具影响力的特徵，并合併做为训练样本。
 ```###############################################################################
 # import some data to play with
 
@@ -31,9 +31,9 @@ X = np.hstack((iris.data, E))
 y = iris.target
 ```
 
-### (二)使用f-value作為判斷的基準來找主要影響力特徵
+### (二)使用f-value作为判断的基准来找主要影响力特徵
 
-以`SelectPercentile`作單變量特徵的計算，以F-test(`f_classif`)來做為選擇的統計方式，挑選函式輸出結果大於百分之十的特徵。並將計算出來的單便量特徵分數結果做正規化，以便比較每特徵在使用單變量計算與未使用單變量計算的差別。
+以`SelectPercentile`作单变量特徵的计算，以F-test(`f_classif`)来做为选择的统计方式，挑选函式输出结果大于百分之十的特徵。并将计算出来的单便量特徵分数结果做正规化，以便比较每特徵在使用单变量计算与未使用单变量计算的差别。
 ```
 ###############################################################################
 # Univariate feature selection with F-test for feature scoring
@@ -45,9 +45,9 @@ scores /= scores.max()
 plt.bar(X_indices - .45, scores, width=.2,
         label=r'Univariate score ($-Log(p_{value})$)', color='g')
 ```
-### (三)找出不計算單變量特徵的分類權重
+### (三)找出不计算单变量特徵的分类权重
 
-以所有特徵資料，以線性核函數丟入支持向量分類機，找出各特徵的權重。
+以所有特徵资料，以线性核函数丢入支持向量分类机，找出各特徵的权重。
 ```
 ###############################################################################
 # Compare to the weights of an SVM
@@ -59,9 +59,9 @@ svm_weights /= svm_weights.max()
 
 plt.bar(X_indices - .25, svm_weights, width=.2, label='SVM weight', color='r')
 ```
-### (四)找出以單變量特徵選出的分類權重
+### (四)找出以单变量特徵选出的分类权重
 
-以單變量特徵選擇選出的特徵，做為分類的訓練特徵，差別在於訓練的特徵資料是使用`selector.transform(X)`將`SelectPercentile`選擇的結果讀取出來，並算出以單變量特徵選擇做預先選擇後，該分類器的判斷權重。
+以单变量特徵选择选出的特徵，做为分类的训练特徵，差别在于训练的特徵资料是使用`selector.transform(X)`将`SelectPercentile`选择的结果读取出来，并算出以单变量特徵选择做预先选择后，该分类器的判断权重。
 ```
 clf_selected = svm.SVC(kernel='linear')
 clf_selected.fit(selector.transform(X), y)
@@ -73,7 +73,7 @@ plt.bar(X_indices[selector.get_support()] - .05, svm_weights_selected,
         width=.2, label='SVM weights after selection', color='b')
 ```
 
-### (五)原始碼出處
+### (五)原始码出处
 Python source code: [plot_feature_selection.py](http://scikit-learn.org/stable/_downloads/plot_feature_selection.py)
 
 ```Python

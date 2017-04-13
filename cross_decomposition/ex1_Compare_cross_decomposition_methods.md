@@ -1,23 +1,23 @@
 
 # Feature Selection
 
-## 互分解 / 範例一:Compare cross decomposition methods
+## 互分解 / 范例一:Compare cross decomposition methods
 
 
 http://scikit-learn.org/stable/auto_examples/cross_decomposition/plot_compare_cross_decomposition.html
 
-這個範例目的是比較幾個互分解的方法。互分解運算主要是使用潛在變量模式（Latent variable modeling）分析來尋找兩個矩陣之間的主要相關成份。
-對比於外顯變量（Manifest variable），也就是一般的觀察變量（Observational variable)，潛在變量是可能會影響實驗觀察的一個未知因素。
+这个范例目的是比较几个互分解的方法。互分解运算主要是使用潜在变量模式（Latent variable modeling）分析来寻找两个矩阵之间的主要相关成份。
+对比于外显变量（Manifest variable），也就是一般的观察变量（Observational variable)，潜在变量是可能会影响实验观察的一个未知因素。
 
-## (一)引入函式庫及內建手寫數字資料庫
+## (一)引入函式库及内建手写数字资料库
 
-引入之函式庫如下
+引入之函式库如下
 
-1. matplotlib.pyplot: 用來繪製影像
+1. matplotlib.pyplot: 用来绘製影像
 2. sklearn.cross_decomposition: 互分解物件
 3. PLSCanonical: Partial Least Squares 淨最小平方法
-4. PLSRegression: PLS 淨最小平方迴歸法
-5. CCA: Canonical correlation analysis 典型相關分析
+4. PLSRegression: PLS 淨最小平方迴归法
+5. CCA: Canonical correlation analysis 典型相关分析
 
 
 
@@ -26,17 +26,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cross_decomposition import PLSCanonical, PLSRegression, CCA
 
-#首先產生500筆常態分佈資料
+#首先产生500笔常态分佈资料
 n = 500
-# 共有兩個潛在變量:
+# 共有两个潜在变量:
 l1 = np.random.normal(size=n)
 l2 = np.random.normal(size=n)
 
-# np.array([l1, l1, l2, l2]).shape = (4L, 500L) 
-# latents 為 500 x 4 之矩陣
+# np.array([l1, l1, l2, l2]).shape = (4L, 500L)
+# latents 为 500 x 4 之矩阵
 latents = np.array([l1, l1, l2, l2]).T
 
-#接下來加入亂數形成X, Y矩陣
+#接下来加入乱数形成X, Y矩阵
 X = latents + np.random.normal(size=4 * n).reshape((n, 4))
 Y = latents + np.random.normal(size=4 * n).reshape((n, 4))
 
@@ -45,7 +45,7 @@ Y_train = Y[:n / 2]
 X_test = X[n / 2:]
 Y_test = Y[n / 2:]
 
-# numpy.corrcoef(x, y=None) 用來記算 Pearson product-moment 相關係數
+# numpy.corrcoef(x, y=None) 用来记算 Pearson product-moment 相关系数
 print("Corr(X)")
 print(np.round(np.corrcoef(X.T), 2))
 print("Corr(Y)")
@@ -62,7 +62,7 @@ print(np.round(np.corrcoef(Y.T), 2))
      [ 0.49  1.   -0.06  0.06]
      [-0.01 -0.06  1.    0.53]
      [ 0.05  0.06  0.53  1.  ]]
-    
+
 
 
 ```python
@@ -209,9 +209,9 @@ X_test_r, Y_test_r = plsca.transform(X_test, Y_test)
      [-0.1]
      [ 0. ]
      [ 0. ]]
-    
 
-## (四)完整程式碼
+
+## (四)完整程式码
 
 Python source code: plot_compare_cross_decomposition.py
 

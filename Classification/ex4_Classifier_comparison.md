@@ -1,14 +1,14 @@
 
-## 分類法/範例四: Classifier comparison
+## 分类法/范例四: Classifier comparison
 
-這個範例的主要目的
-* 比較各種分類器
-* 利用圖示法觀察各種分類器的分類邊界及區域
+这个范例的主要目的
+* 比较各种分类器
+* 利用图示法观察各种分类器的分类边界及区域
 
 
-##(一)引入函式並準備分類器
-* 將分類器引入之後存放入一個`list`裏
-* 這邊要注意 sklearn.discriminant_analysis 必需要 `sklearn 0.17`以上才能執行
+##(一)引入函式并准备分类器
+* 将分类器引入之后存放入一个`list`里
+* 这边要注意 sklearn.discriminant_analysis 必需要 `sklearn 0.17`以上才能执行
 
 
 ```python
@@ -44,11 +44,11 @@ classifiers = [
 ```
 
 
-##(二)準備測試資料
-* 利用`make_classification`產生分類資料，`n_features=2`表示共有兩個特徵, `n_informative=2` 代表有兩個類別
-* 所產生之 X: 100 x 2矩陣，y: 100 元素之向量，y的數值僅有0或是1用來代表兩種類別
-* 利用`X += 2 * rng.uniform(size=X.shape)`加入適度的雜訊後將(X,y)資料集命名為`linear_separable`
-* 最後利用`make_moon()`及`make_circles()`產生空間中月亮形狀及圓形之數據分佈後，一併存入`datasets`變數
+##(二)准备测试资料
+* 利用`make_classification`产生分类资料，`n_features=2`表示共有两个特徵, `n_informative=2` 代表有两个类别
+* 所产生之 X: 100 x 2矩阵，y: 100 元素之向量，y的数值仅有0或是1用来代表两种类别
+* 利用`X += 2 * rng.uniform(size=X.shape)`加入适度的杂讯后将(X,y)资料集命名为`linear_separable`
+* 最后利用`make_moon()`及`make_circles()`产生空间中月亮形状及圆形之数据分佈后，一併存入`datasets`变数
 
 
 ```python
@@ -64,26 +64,26 @@ datasets = [make_moons(noise=0.3, random_state=0),
             ]
 ```
 
-## (三)測試分類器並作圖
+## (三)测试分类器并作图
 
-接下來這段程式碼有兩個for 迴圈，外迴圈走過三個的dataset，內迴圈則走過所有的分類器。
-為求簡要說明，我們將程式碼簡略如下：
-1. 外迴圈：資料迴圈。首先畫出資料分佈，接著將資料傳入分類器迴圈
+接下来这段程式码有两个for 迴圈，外迴圈走过三个的dataset，内迴圈则走过所有的分类器。
+为求简要说明，我们将程式码简略如下：
+1. 外迴圈：资料迴圈。首先画出资料分佈，接著将资料传入分类器迴圈
     ```python
     for ds in datasets:
         X, y = ds
-        #調整特徵值大小使其在特定範圍
+        #调整特徵值大小使其在特定范围
         X = StandardScaler().fit_transform(X)
-        #利用train_test_split將資料分成訓練集以及測試集
+        #利用train_test_split将资料分成训练集以及测试集
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.4)
-        #產生資料網格來大範圍測試分類器，範例EX 3有詳述該用法
+        #产生资料网格来大范围测试分类器，范例EX 3有详述该用法
         xx, yy = np.meshgrid(..........省略)
-        # 畫出訓練資料點
+        # 画出训练资料点
         ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright)
-        # 畫出測試資料點，用alpha=0.6將測試資料點畫的"淡"一些
+        # 画出测试资料点，用alpha=0.6将测试资料点画的"淡"一些
         ax.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=cm_bright, alpha=0.6)
     ```
-2. 內迴圈：分類器迴圈。測試分類準確度並繪製分類邊界及區域
+2. 内迴圈：分类器迴圈。测试分类准确度并绘製分类边界及区域
     ```python
     for name, clf in zip(names, classifiers):
         clf.fit(X_train, y_train)
@@ -100,7 +100,7 @@ datasets = [make_moons(noise=0.3, random_state=0),
         Z = Z.reshape(xx.shape)
         ax.contourf(xx, yy, Z, cmap=cm, alpha=.8)
     ```
-為了顯示方便，我將原始碼的內圈改為 `for name, clf in zip(names[0:4], classifiers[0:4]):`只跑過前四個分類器。
+为了显示方便，我将原始码的内圈改为 `for name, clf in zip(names[0:4], classifiers[0:4]):`只跑过前四个分类器。
 
 
 ```python
@@ -174,7 +174,7 @@ plt.show()
 ![png](images/ex4_output_5_0.png)
 
 
-## (四) 原始碼列表
+## (四) 原始码列表
 Python source code: plot_classifier_comparison.py
 
 http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html

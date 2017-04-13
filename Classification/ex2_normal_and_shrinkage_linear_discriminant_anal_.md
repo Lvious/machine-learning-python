@@ -1,17 +1,17 @@
 
-##分類法/範例二: Normal and Shrinkage Linear Discriminant Analysis for classification
+##分类法/范例二: Normal and Shrinkage Linear Discriminant Analysis for classification
 
 http://scikit-learn.org/stable/auto_examples/classification/plot_lda.html
 
-這個範例用來展示scikit-learn 如何使用Linear Discriminant Analysis (LDA) 線性判別分析來達成資料分類的目的
+这个范例用来展示scikit-learn 如何使用Linear Discriminant Analysis (LDA) 线性判别分析来达成资料分类的目的
 
-1. 利用 `sklearn.datasets.make_blobs` 產生測試資料
-2. 利用自定義函數 `generate_data` 產生具有數個特徵之資料集，其中僅有一個特徵對於資料分料判斷有意義
-3. 使用`LinearDiscriminantAnalysis`來達成資料判別
-4. 比較於LDA演算法中，開啟 `shrinkage` 前後之差異
+1. 利用 `sklearn.datasets.make_blobs` 产生测试资料
+2. 利用自定义函数 `generate_data` 产生具有数个特徵之资料集，其中仅有一个特徵对于资料分料判断有意义
+3. 使用`LinearDiscriminantAnalysis`来达成资料判别
+4. 比较于LDA演算法中，开启 `shrinkage` 前后之差异
 
-## (一)產生測試資料
-從程式碼來看，一開始主要為自定義函數`generate_data(n_samples, n_features)`，這個函數的主要目的為產生一組測試資料，總資料列數為`n_samples`，每一列共有`n_features`個特徵。而其中只有第一個特徵得以用來判定資料類別，其他特徵則毫無意義。`make_blobs`負責產生單一特徵之資料後，利用｀np.random.randn｀　亂數產生其他｀n_features - 1｀個特徵，之後利用`np.hstack`以"水平" (horizontal)方式連接X以及亂數產生之特徵資料。
+## (一)产生测试资料
+从程式码来看，一开始主要为自定义函数`generate_data(n_samples, n_features)`，这个函数的主要目的为产生一组测试资料，总资料列数为`n_samples`，每一列共有`n_features`个特徵。而其中只有第一个特徵得以用来判定资料类别，其他特徵则毫无意义。`make_blobs`负责产生单一特徵之资料后，利用｀np.random.randn｀　乱数产生其他｀n_features - 1｀个特徵，之后利用`np.hstack`以"水平" (horizontal)方式连接X以及乱数产生之特徵资料。
 
 
 ```python
@@ -38,7 +38,7 @@ def generate_data(n_samples, n_features):
 
 ```
 
-我們可以用以下的程式碼來測試自定義函式，結果回傳了X (10x5矩陣)及y(10個元素之向量)，我們可以使用`pandas.DataFrame`套件來觀察資料
+我们可以用以下的程式码来测试自定义函式，结果回传了X (10x5矩阵)及y(10个元素之向量)，我们可以使用`pandas.DataFrame`套件来观察资料
 
 
 ```python
@@ -50,7 +50,7 @@ df=pd.DataFrame(np.hstack([y.reshape(10,1),X]))
 df.columns = ['y', 'X0', 'X1', 'X2', 'X2', 'X4']
 print(df)
 ```
-結果顯示如下。。我們可以看到只有X的第一行特徵資料(X0) 與目標數值 y 有一個明確的對應關係，也就是y為1時，數值較大。
+结果显示如下。。我们可以看到只有X的第一行特徵资料(X0) 与目标数值 y 有一个明确的对应关系，也就是y为1时，数值较大。
 ```
        y    X0    X1    X2    X2    X4
     0  1  0.38  0.35  0.80 -0.97 -0.68
@@ -65,9 +65,9 @@ print(df)
     9  0 -0.58 -0.07 -1.01  0.15 -1.84
 ```    
 
-## (二)改變特徵數量並測試shrinkage之功能
+## (二)改变特徵数量并测试shrinkage之功能
 
-接下來程式碼裏有兩段迴圈，外圈改變特徵數量。內圈則多次嘗試LDA之以求精準度。使用`LinearDiscriminantAnalysis`來訓練分類器，過程中以`shrinkage='auto'`以及`shrinkage=None`來控制shrinkage之開關，將分類器分別以`clf1`以及`clf2`儲存。之後再產生新的測試資料將準確度加入`score_clf1`及`score_clf2`裏，離開內迴圈之後除以總數以求平均。
+接下来程式码里有两段迴圈，外圈改变特徵数量。内圈则多次尝试LDA之以求精准度。使用`LinearDiscriminantAnalysis`来训练分类器，过程中以`shrinkage='auto'`以及`shrinkage=None`来控制shrinkage之开关，将分类器分别以`clf1`以及`clf2`储存。之后再产生新的测试资料将准确度加入`score_clf1`及`score_clf2`里，离开内迴圈之后除以总数以求平均。
 
 
 ```python
@@ -89,8 +89,8 @@ for n_features in n_features_range:
     acc_clf2.append(score_clf2 / n_averages)
 ```
 
-## (三)顯示LDA判別結果
-這個範例主要希望能得知`shrinkage`的功能，因此畫出兩條分類準確度的曲線。縱軸代表平均的分類準確度，而橫軸代表的是`features_samples_ratio` 顧名思義，它是模擬資料中，特徵數量與訓練資料列數的比例。當特徵數量為75且訓練資料列數僅有20筆時，`features_samples_ratio = 3.75` 由於資料列數過少，導致準確率下降。而此時`shrinkage`演算法能有效維持LDA演算法的準確度。
+## (三)显示LDA判别结果
+这个范例主要希望能得知`shrinkage`的功能，因此画出两条分类准确度的曲线。纵轴代表平均的分类准确度，而横轴代表的是`features_samples_ratio` 顾名思义，它是模拟资料中，特徵数量与训练资料列数的比例。当特徵数量为75且训练资料列数仅有20笔时，`features_samples_ratio = 3.75` 由于资料列数过少，导致准确率下降。而此时`shrinkage`演算法能有效维持LDA演算法的准确度。
 
 
 
@@ -112,7 +112,7 @@ plt.show()
 ![png](images/ex2_output_8_0.png)
 
 
-## (四)完整程式碼
+## (四)完整程式码
 
 Python source code: [plot_lda.py](http://scikit-learn.org/stable/_downloads/plot_lda.py)
 ```python

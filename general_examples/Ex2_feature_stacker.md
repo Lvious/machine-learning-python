@@ -1,22 +1,22 @@
 
-# 通用範例/範例二: Concatenating multiple feature extraction methods
+# 通用范例/范例二: Concatenating multiple feature extraction methods
 
 http://scikit-learn.org/stable/auto_examples/feature_stacker.html
 
-在許多實際應用中，會有很多方法可以從一個數據集中提取特徵。也常常會組合多個方法來獲得良好的特徵。這個例子說明如何使用` FeatureUnion` 來結合由` PCA` 和` univariate selection` 時的特徵。
+在许多实际应用中，会有很多方法可以从一个数据集中提取特征。也常常会组合多个方法来获得良好的特征。这个例子说明如何使用` FeatureUnion` 来结合由` PCA` 和` univariate selection` 时的特征。
 
-這個範例的主要目的：
-1. 資料集：iris 鳶尾花資料集
-2. 特徵：鳶尾花特徵
-3. 預測目標：是那一種鳶尾花
-4. 機器學習方法：SVM 支持向量機
-5. 探討重點：特徵結合
-6. 關鍵函式： `sklearn.pipeline.FeatureUnion`
+这个范例的主要目的：
+1. 资料集：iris 鸢尾花资料集
+2. 特征：鸢尾花特征
+3. 预测目标：是那一种鸢尾花
+4. 机器学习方法：SVM 支持向量机
+5. 探讨重点：特征结合
+6. 关键函式： `sklearn.pipeline.FeatureUnion`
 
-# (一)資料匯入及描述
+# (一)资料汇入及描述
 
-* 首先先匯入iris 鳶尾花資料集，使用from sklearn.datasets import load_iris將資料存入
-* 準備X (特徵資料) 以及 y (目標資料)
+* 首先先汇入iris 鸢尾花资料集，使用from sklearn.datasets import load_iris将资料存入
+* 准备X (特征资料) 以及 y (目标资料)
 
 
 ```python
@@ -32,21 +32,21 @@ iris = load_iris()
 X, y = iris.data, iris.target
 ```
 
-測試資料：<br />
-`iris`為一個dict型別資料。
+测试资料：<br />
+`iris`为一个dict型别资料。
 
-| 顯示 | 說明 |
+| 显示 | 说明 |
 | -- | -- |
-| ('target_names', (3L,))| 共有三種鳶尾花 setosa, versicolor, virginica |
-| ('data', (150L, 4L)) | 有150筆資料，共四種特徵 |
-| ('target', (150L,))| 這150筆資料各是那一種鳶尾花|
-| DESCR | 資料之描述 |
-| feature_names| 4個特徵代表的意義 |
+| ('target_names', (3L,))| 共有三种鸢尾花 setosa, versicolor, virginica |
+| ('data', (150L, 4L)) | 有150笔资料，共四种特征 |
+| ('target', (150L,))| 这150笔资料各是那一种鸢尾花|
+| DESCR | 资料之描述 |
+| feature_names| 4个特征代表的意义 |
 
-# (二)PCA與SelectKBest
-* `PCA(n_components = 主要成份數量)`:Principal Component Analysis(PCA)主成份分析，是一個常用的將資料維度減少的方法。它的原理是找出一個新的座標軸，將資料投影到該軸時，數據的變異量會最大。利用這個方式減少資料維度，又希望能保留住原數據點的特性。
+# (二)PCA与SelectKBest
+* `PCA(n_components = 主要成份数量)`:Principal Component Analysis(PCA)主成份分析，是一个常用的将资料维度减少的方法。它的原理是找出一个新的座标轴，将资料投影到该轴时，数据的变异量会最大。利用这个方式减少资料维度，又希望能保留住原数据点的特性。
 
-* `SelectKBest(score_func , k )`: `score_func`是選擇特徵值所依據的函式，而`K`值則是設定要選出多少特徵。
+* `SelectKBest(score_func , k )`: `score_func`是选择特征值所依据的函式，而`K`值则是设定要选出多少特征。
 
 
 ```python
@@ -59,8 +59,8 @@ selection = SelectKBest(k=1)
 
 # (三)FeatureUnionc
 
-* 使用sklearn.pipeline.FeatureUnion合併主成分分析(PCA)和綜合篩選(SelectKBest)。
-* 最後得到選出的特徵
+* 使用sklearn.pipeline.FeatureUnion合併主成分分析(PCA)和综合筛选(SelectKBest)。
+* 最后得到选出的特征
 
 
 
@@ -73,10 +73,10 @@ combined_features = FeatureUnion([("pca", pca), ("univ_select", selection)])
 X_features = combined_features.fit(X, y).transform(X)
 ```
 
-# (四)找到最佳的結果
-* Scikit-learn的支持向量機分類函式庫利用 SVC() 建立運算物件，之後並可以用運算物件內的方法 .fit() 與 .predict() 來做訓練與預測。
+# (四)找到最佳的结果
+* Scikit-learn的支持向量机分类函式库利用 SVC() 建立运算物件，之后并可以用运算物件内的方法 .fit() 与 .predict() 来做训练与预测。
 
-* 使用`GridSearchCV`交叉驗證，得到由參數網格計算出的分數網格，並找到分數網格中最佳點。最後顯示這個點所代表的參數
+* 使用`GridSearchCV`交叉验证，得到由参数网格计算出的分数网格，并找到分数网格中最佳点。最后显示这个点所代表的参数
 
 
 ```python
@@ -94,14 +94,14 @@ grid_search = GridSearchCV(pipeline, param_grid=param_grid, verbose=10)
 grid_search.fit(X, y)
 print(grid_search.best_estimator_)
 ```
-結果顯示
+结果显示
 ``` Fitting 3 folds for each of 18 candidates, totalling 54 fits
     [CV] features__univ_select__k=1, features__pca__n_components=1, svm__C=0.1
     [CV] features__univ_select__k=1, features__pca__n_components=1, svm__C=0.1, score=0.960784 -   0.0s
 ```
 
 
-## (五)完整程式碼
+## (五)完整程式码
 Python source code: feature_stacker.py
 http://scikit-learn.org/stable/auto_examples/feature_stacker.html
 

@@ -1,45 +1,45 @@
-# 通用範例/範例三: Isotonic Regression
+# 通用范例/范例三: Isotonic Regression
 
 http://scikit-learn.org/stable/auto_examples/plot_isotonic_regression.html
 
-迴歸函數採用遞增函數。
+迴归函数採用递增函数。
 
-* y[] are inputs (real numbers) 
+* y[] are inputs (real numbers)
 * y_[] are fitted
 
 
-這個範例的主要目的：
+这个范例的主要目的：
 
-比較
+比较
 
 * Isotonic Fit
 * Linear Fit
 
 
-# (一) Regression「迴歸」
-「迴歸」就是找一個函數，盡量符合手邊的一堆數據。此函數稱作「迴歸函數」。
+# (一) Regression「迴归」
+「迴归」就是找一个函数，尽量符合手边的一堆数据。此函数称作「迴归函数」。
 
-# (二) Linear Regression「線性迴歸」
-迴歸函數採用線性函數。誤差採用平方誤差。
+# (二) Linear Regression「线性迴归」
+迴归函数採用线性函数。误差採用平方误差。
 
 `class sklearn.linear_model.LinearRegression`
 
-二維數據，迴歸函數是直線。
+二维数据，迴归函数是直线。
 
 ![](images/Isotonic Regression_figure_1.png)
 
 
-# (三) Isotonic Regression「保序迴歸」
-具有分段迴歸的效果。迴歸函數採用遞增函數。
+# (三) Isotonic Regression「保序迴归」
+具有分段迴归的效果。迴归函数採用递增函数。
 
 `class sklearn.isotonic.IsotonicRegression`
 
-採用平方誤差，時間複雜度 O(N) 。
+採用平方误差，时间複杂度 O(N) 。
 
 ![](images/Isotonic Regression_figure_2.png)
 
 
-# (四) 完整程式碼
+# (四) 完整程式码
 
 Python source code: plot_isotonic_regression.py
 
@@ -94,5 +94,3 @@ plt.show()
 
 ```
 ![](images/Isotonic Regression_figure_3.png)
-
-
